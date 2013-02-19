@@ -75,6 +75,13 @@ Kernel file(s):
 
 Startup scripts/config files:
 
+    windowsStartupScripts.PNG
+    
+    Description:
+        This dialog box is opened by running 'msconfig'. The boot tab shows the
+        operating system, so I would assume the script tab shows the startup
+        scripts.
+
 First Process:
 
     windowsFirstProcess.png
