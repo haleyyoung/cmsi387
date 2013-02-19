@@ -1,7 +1,14 @@
 Linux
 =======
 
-Pre-OS software: 
+Pre-OS software: linuxPreOS1.JPG and linuxPreOS2.JPG
+    Description: The first file shows the grub interface in which the user can
+    pick which kernel they would like to boot from, but if the user presses 'e',
+    they can alter the commands which are run in the firmware while the computer
+    is booting up. This is significant because the way the operating system boots
+    up can be altered from this menu. This is the most tamper proof pre-os
+    software in relation to the other two OS's because it only allows the user to
+    pick from existing drives, there are no other options available.
 
 Kernel File(s): linuxKernel.png
     Description: The linux kernel can be found in the /boot folder, its
@@ -27,7 +34,12 @@ Network Settings: linuxNetworkSettings.png
 Windows
 =======
 
-Pre-OS software: 
+Pre-OS software: windowsPreOS.JPG
+    Description: This menu allows the user to toggle between different options
+    for the configuration of the preboot environment as well as other variables.
+    From this menu, a user can alter the boot process which occurs, but they
+    don't have as much freedom as a linux user given that they are only allowed
+    to toggle between options.
 
 Kernel file(s): windowsKernel.png
     Description: The description says NT Kernel and System. Also, this is a
