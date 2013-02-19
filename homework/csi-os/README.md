@@ -29,13 +29,19 @@ Windows
 
 Pre-OS software: 
 
-Kernel file(s):
+Kernel file(s): windowsKernel.png
+    Description: The description says NT Kernel and System. Also, this is a
+    large file, so it appears to be the kernel.
 
 Startup scripts/config files:
 
-First Process:
+First Process: windowsFirstProcess.png
+    Description: The PID's start at 4, but the image name of the 4th process says
+    'System' which would make sense as being the first process.
 
-Network Settings:
+Network Settings: windowsNetworkSettings.png
+    Description: This shows a dialog box where the preferences of the network
+    connections can be changed.
 
 =======
 
