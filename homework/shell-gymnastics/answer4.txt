@@ -1,119 +1,14 @@
-1000		-bash
-1000		top
-102		dbus-daemon
-daemon		atd
-hyoung4		awk
-hyoung4		-bash
-hyoung4		ps
-hyoung4		sort
-hyoung4		sshd:
-mongodb		/usr/bin/mongod
-mysql		/usr/sbin/mysqld
-postfix		pickup
-postfix		qmgr
-postfix		tlsmgr
-root		[ata_sff]
-root		[bdi-default]
-root		/bin/login
-root		[cpuset]
-root		cron
-root		[crypto]
-root		dhclient3
-root		[ecryptfs-kthrea]
-root		[ext4-dio-unwrit]
-root		[ext4-dio-unwrit]
-root		[ext4-dio-unwrit]
-root		[ext4-dio-unwrit]
-root		[ext4-dio-unwrit]
-root		[ext4-dio-unwrit]
-root		[flush-8:0]
-root		[fsnotify_mark]
-root		[jbd2/sda10-8]
-root		[jbd2/sda1-8]
-root		[jbd2/sda6-8]
-root		[jbd2/sda7-8]
-root		[jbd2/sda8-8]
-root		[jbd2/sda9-8]
-root		[kblockd]
-root		[khelper]
-root		[khubd]
-root		[khugepaged]
-root		[khungtaskd]
-root		[kintegrityd]
-root		[kpsmoused]
-root		[ksmd]
-root		[ksoftirqd/0]
-root		[ksoftirqd/1]
-root		[ksoftirqd/2]
-root		[ksoftirqd/3]
-root		[kswapd0]
-root		[kthreadd]
-root		[kthrotld]
-root		[kworker/0:0]
-root		[kworker/0:1]
-root		[kworker/1:0]
-root		[kworker/1:1]
-root		[kworker/2:0]
-root		[kworker/2:2]
-root		[kworker/3:0]
-root		[kworker/3:1]
-root		[kworker/u:1]
-root		[kworker/u:2]
-root		[lockd]
-root		[md]
-root		[migration/0]
-root		[migration/1]
-root		[migration/2]
-root		[migration/3]
-root		[netns]
-root		[nfsd]
-root		[nfsd]
-root		[nfsd]
-root		[nfsd]
-root		[nfsd]
-root		[nfsd]
-root		[nfsd]
-root		[nfsd]
-root		[nfsd4]
-root		[nfsd4_callbacks]
-root		[nfsiod]
-root		rpcbind
-root		rpc.idmapd
-root		[rpciod]
-root		/sbin/getty
-root		/sbin/getty
-root		/sbin/getty
-root		/sbin/getty
-root		/sbin/getty
-root		/sbin/init
-root		[scsi_eh_0]
-root		[scsi_eh_1]
-root		sshd:
-root		[sync_supers]
-root		udevd
-root		udevd
-root		udevd
-root		upstart-socket-bridge
-root		upstart-udev-bridge
-root		/usr/bin/netserver
-root		/usr/bin/node
-root		/usr/lib/postfix/master
-root		/usr/sbin/apache2
-root		/usr/sbin/ipfm
-root		/usr/sbin/irqbalance
-root		/usr/sbin/rpc.mountd
-root		/usr/sbin/sshd
-root		/usr/sbin/ypbind
-statd		rpc.statd
-syslog		rsyslogd
-USER		COMMAND
-www-data		/usr/sbin/apache2
-www-data		/usr/sbin/apache2
-www-data		/usr/sbin/apache2
-www-data		/usr/sbin/apache2
-www-data		/usr/sbin/apache2
-www-data		/usr/sbin/apache2
-www-data		/usr/sbin/apache2
-www-data		/usr/sbin/apache2
-www-data		/usr/sbin/apache2
-www-data		/usr/sbin/apache2
+1000
+102
+akerawa2
+apascua
+awon
+daemon
+khiga1
+mongodb
+mysql
+postfix
+statd
+syslog
+USER
+www-data
