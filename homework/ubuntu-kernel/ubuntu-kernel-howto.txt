@@ -1,4 +1,6 @@
-Used this webpage for guidance: http://arvindsraj.wordpress.com/2012/10/05/adding-hello-world-system-call-to-linux/
+Used this webpage for guidance:
+http://arvindsraj.wordpress.com/2012/10/05/adding-hello-world-system-call-to-linux/
+http://stackoverflow.com/questions/12469836/how-to-write-system-calls-on-debian-ubuntu
 
 Add your syscall to the syscall table - add your syscall to the file:
 
@@ -16,6 +18,30 @@ ubuntu-quantal/arch/sh/include/asm/unistd_32.h
 add: "#define __NR_helloworld     367"
 
 add one more to the number: "#define NR_syscalls 368"
+
+ubuntu-quantal/include/linux/syscalls.h
+"asmlinkage long sys_helloworld(void);"
+
+
+in the root directory of the operating system add a folder called "test"
+then add a file called "sys_helloworld.c" with the following code in it:
+
+"#include <linux/kernel.h>
+
+asmlinkage long sys_helloworld(void) {
+    printk("Hello world! This freaking rocks!\n");
+    return 0;
+}"
+
+add a file called "Makefile" to the test directory and add this line to it:
+"obj-y := sys_helloworld.o"
+
+in ubuntu-quantal/Makfile add "test/" to the end of the line that says:
+"core-y		+= kernel/ mm/ fs/ ipc/ security/ crypto/ block/"
+
+
+
+
 
 
 
