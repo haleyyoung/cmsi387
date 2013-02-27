@@ -39,13 +39,12 @@ add a file called "Makefile" to the test directory and add this line to it:
 in ubuntu-quantal/Makfile add "test/" to the end of the line that says:
 "core-y		+= kernel/ mm/ fs/ ipc/ security/ crypto/ block/"
 
+build your kernel (this takes me 2 hours)
 
+dpkg your new .deb files
 
+reboot your computer
 
+write a program which calls your new syscall and run it
 
-
-
-look at the included files in this file:
-
-ubuntu-quantal/arch/x86/kernel/syscall_32.c
-
+us this command "tail -f /var/log/kern.log" to see the kernel log and wait to see your hello-world output at the end of the list!
