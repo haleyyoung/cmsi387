@@ -1,0 +1,25 @@
+Used this webpage for guidance: http://arvindsraj.wordpress.com/2012/10/05/adding-hello-world-system-call-to-linux/
+
+Add your syscall to the syscall table - add your syscall to the file:
+
+ubuntu-quantal/arch/x86/syscalls/syscall_32.tbl
+"350 i386    helloworld      sys_helloworld"
+
+ubuntu-quantal/arch/m32r/kernel/syscall_table.S 
+"    .long sys_helloworld"
+
+ubuntu-quantal/arch/sh/kernel/syscalls_32.S
+"    .long sys_helloworld"
+
+ubuntu-quantal/arch/sh/include/asm/unistd_32.h
+
+add: "#define __NR_helloworld     367"
+
+add one more to the number: "#define NR_syscalls 368"
+
+
+
+look at the included files in this file:
+
+ubuntu-quantal/arch/x86/kernel/syscall_32.c
+
