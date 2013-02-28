@@ -39,12 +39,33 @@ add a file called "Makefile" to the test directory and add this line to it:
 in ubuntu-quantal/Makfile add "test/" to the end of the line that says:
 "core-y		+= kernel/ mm/ fs/ ipc/ security/ crypto/ block/"
 
-build your kernel (this takes me 2 hours)
+build your kernel using these two commands at the root directory of your operating system (this takes me 2 hours):
 
-dpkg your new .deb files
+fakeroot debian/rules clean
+fakeroot debian/rules binary-headers binary-generic
 
-reboot your computer
+then go up one directory and use these two commands:
 
-write a program which calls your new syscall and run it
+sudo dpkg -i linux*2.6.38-7.37*.deb
+sudo reboot
 
-us this command "tail -f /var/log/kern.log" to see the kernel log and wait to see your hello-world output at the end of the list!
+once your system has rebooted, create a c program which calls your newly built system call:
+
+#include <linux/types.h>
+#include <linux/unistd.h>
+#include <sys/types.h>
+#include <string.h>
+
+int main(int argc, char *argv[]) {
+  int result = syscall(350);
+
+  if (result == -1) {
+    char *errorMessage = "Oh no! My kernel fails";
+  }
+  return result;
+}
+
+
+to check to see if your syscall worked, check your kernel log:
+
+use this command "tail -f /var/log/kern.log" to see the kernel log and wait to see your hello-world output at the end of the list!
