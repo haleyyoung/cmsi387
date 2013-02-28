@@ -128,7 +128,7 @@ the folder needs to be added to the top-level Makefile which is automatically
 read during the build. The location of this file is
 
 `
-ubuntu-quantal/Makfile
+ubuntu-quantal/Makefile
 `
 
 There is a line about 80 or so lines into the file which says
@@ -193,7 +193,8 @@ using the following two commands
 
 `
 sudo dpkg -i linux*3.5.0-25*.deb
-
+`
+`
 sudo reboot
 `
 
