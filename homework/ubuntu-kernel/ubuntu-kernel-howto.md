@@ -212,6 +212,10 @@ commandline
 tail -f /var/log/kern.log
 `
 
+My output looked like this
+
+![outputImage](/helloWorldWorks.png)
+
 [This webpage may be helpful](http://askubuntu.com/questions/15647/where-can-i-find-the-kernel-logs)
 
 And you're done! 
