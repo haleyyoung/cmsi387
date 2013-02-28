@@ -1,0 +1,271 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>How To Add Your Own System Call from a Vanilla Ubuntu 12 Install</title>
+        <link rel="stylesheet" href="ubuntu-kernel-howto.css"/>
+    </head>
+    <body>
+        <div id= "pageTitle">How To Add Your Own System Call from a Vanilla Ubuntu 12 Install</div>
+        <p id = "note">*Note that this how-to page is specifically for the Ubuntu 3.5.0-25-generic kernel*</p>
+        <div id = "building">
+            <p class ="section">General Building Steps</p>
+            <p>From Dr. Dionisio's "Linux Kernel Building and Modification -- A Conceptual Guide" handout:
+                <blockquote>
+                <p>* Acquire the kernel source code</p>
+                <p>* Acquire prerequisite software</p>
+                <p>* Linux kernel code supports multiple architectures--be aware that not all source files will apply to your build</p>
+                <p>* Configure the kernel (for your architecture)</p>
+                <p>* Start the actual build sequence</p>
+                <p>* Install the build products</p>
+                </blockquote>
+                <a href="http://myweb.lmu.edu/dondi/share/os/kernel-build-and-mod.pdf"> Here is Dr. Dionisio's full handout </a>
+            </p>
+        </div>
+        <div id= "modification">
+            <p class ="section">Modification Steps</p>
+            <p>
+The first thing you need to do is add your new syscall to the syscall table.
+Depending on the kernel you've obtained, the location of this file may be
+different from that described here, but in general, you're looking for a file
+with a name close to "syscall_32.tbl". In my case, the file is located in
+                <div class = "codeblock">
+                    <pre><code>
+ubuntu-quantal/arch/x86/syscalls/syscall_32.tbl
+                    </code></pre>
+                </div>
+            </p>
+            <p>
+Once you locate this file, you will want to add the following line to the end of
+the list of syscalls. Note that the first number is the hardcoded number that
+can be used to directly call our new helloworld syscall. The second number
+denotes the type of system we're working with. The third element of the line is
+the name of the syscall if one wanted to call it on the commandline. The fourth
+element of this line of code is the name of the function that will be called
+when the system call is called.
+                <div class = "codeblock">
+                    <pre><code>
+350 i386    helloworld      sys_helloworld
+                    </code></pre>
+                </div>
+            <p>
+Next, in the syscalls_32.S file, you need to tell the kernel what type of output
+your system call is going to generate. In this case, since we're just writing a
+simple hello world, we are just going to return a long. The location of this
+file in my kernel is
+                <div class = "codeblock">
+                    <pre><code>
+ubuntu-quantal/arch/sh/kernel/syscalls_32.S
+                    </code></pre>
+                </div>
+And the line of code you want to add is
+                <div class = "codeblock">
+                    <pre><code>
+.long sys_helloworld
+                    </code></pre>
+                </div>
+You're going to add this at the end of the file.
+            </p>
+            <p>
+Now you need to define helloworld as a constant which will be used by the kernel
+when you call your helloworld system call. The place to do this is in the header
+file called unistd_32.h which is located in
+                <div class = "codeblock">
+                    <pre><code>
+ubuntu-quantal/arch/sh/include/asm/unistd_32.h
+                    </code></pre>
+                </div>
+You need to add the following line to the end of the file just before the line
+which defines the number of system calls in the kernel. The number should be
+one more than whatever the line above it defines its system call to be.
+                <div class = "codeblock">
+                    <pre><code>
+#define __NR_helloworld     367
+                    </code></pre>
+                </div>
+Also, you will need to increment the number of system calls by one (remember
+they are indexed starting with 0). This should be done by altering the next line
+of code.
+                <div class = "codeblock">
+                    <pre><code>
+#define NR_syscalls 368
+                    </code></pre>
+                </div>
+            </p>
+            <p>
+Next, we need to tell the syscalls header file what signature it's looking for
+when searching for your system call. This is done by adding the a line of code
+to the syscalls.h file which is located in
+                <div class = "codeblock">
+                    <pre><code>
+ubuntu-quantal/include/linux/syscalls.h
+                    </code></pre>
+                </div>
+The line of code to be added is
+                <div class = "codeblock">
+                    <pre><code>
+asmlinkage long sys_helloworld(void);
+                    </code></pre>
+                </div>
+and should be added just before the last line of the file which is "#endif".
+            </p>
+            <p>
+Finally, you get to write your system call! Create a file with the name
+"sys_helloworld.c". This corresponds to the name we added to the syscall table.
+You will want to put this file in a new directory located in the root directory
+of your (used-to-be!)vanilla kernel. My folder is called "/test", but you can
+call it whatever you like, but for the rest of this *howto*, I will be referring
+to this folder as "test". So save your .c file in this new folder and for a
+simple hello world program, all you need in the file is
+                <div class = "codeblock">
+                    <pre><code>
+#include <linux/kernel.h>
+
+asmlinkage long sys_helloworld(void) {
+    printk("Hello world! This freaking rocks!\n");
+    return 0;
+}
+                    </code></pre>
+                </div>
+            </p>
+            <p>
+The next step is to link your system call to the kernel so it knows where the
+function is when the system call gets called. The first element of this linking
+process is creating a Makefile. When the kernel is being built, it searches for
+anything called "Makefile" and uses its references to locate the object files
+necessary to build. Create a file called "Makefile" in your "/test" directory
+and the only thing you need to put in it is
+                <div class = "codeblock">
+                    <pre><code>
+obj-y := sys_helloworld.o
+                    </code></pre>
+                </div>
+In order for the build process to even search the "/test" folder for a Makefile,
+the folder needs to be added to the top-level Makefile which is automatically
+read during the build. The location of this file is
+                <div class = "codeblock">
+                    <pre><code>
+ubuntu-quantal/Makefile
+                    </code></pre>
+                </div>
+There is a line about 80 or so lines into the file which says
+                <div class = "codeblock">
+                    <pre><code>
+core-y		+= kernel/ mm/ fs/ ipc/ security/ crypto/ block/
+                    </code></pre>
+                </div>
+You will want to add "test/" to the end of this line, resulting in
+                <div class = "codeblock">
+                    <pre><code>
+core-y		+= kernel/ mm/ fs/ ipc/ security/ crypto/ block/ test/
+                    </code></pre>
+                </div>
+                <a href="http://stackoverflow.com/questions/12469836/how-to-write-system-calls-on-debian-ubuntu">
+                    This webpage may be helpful</a>
+            </p>
+            <p>
+The last step before building your kernel is writing a C program which calls
+your new system call. This can be located wherever you like and named whatever
+you like, just like a normal C program. The contents of my C program are
+                <div class = "codeblock">
+                    <pre><code>
+#include <linux/types.h>
+#include <linux/unistd.h>
+#include <sys/types.h>
+#include <string.h>
+
+int main(int argc, char *argv[]) {
+  int result = syscall(350);
+
+  if (result == -1) {
+    char *errorMessage = "Oh no! My kernel fails";
+  }
+  return result;
+}
+                    </code></pre>
+                </div>
+            </p>
+        </div>
+        <div id = "building">
+            <p class ="section">Build Steps</p>
+            <p>
+Now it's time to actually build your newly modified kernel! From the root
+directory of your kernel, on the commandline, enter this command
+                <div class = "codeblock">
+                    <pre><code>
+fakeroot debian/rules clean
+                    </code></pre>
+                </div>
+Once this is done, you're ready to call the command which builds the kernel.
+                <p>
+                *(Note that this takes me 2 hours so don't be alarmed if it takes
+                your machine a while to complete this task. Also note that I am
+                running in a virtual machine\on a laptop, so if you're on a desktop,
+                things may run more quickly)*
+                </p>
+                <div class = "codeblock">
+                    <pre><code>
+fakeroot debian/rules binary-headers binary-generic
+                    </code></pre>
+                </div>
+Once the build it complete, there should be three new .deb files in the
+directory above your kernel source. These need to be depackaged and then you
+need to reboot your system to load the newly built kernel. This can be done
+using the following two commands
+                <div class = "codeblock">
+                    <pre><code>
+sudo dpkg -i linux*3.5.0-25*.deb
+
+sudo reboot
+                    </code></pre>
+                </div>
+                <a href= "https://wiki.ubuntu.com/Kernel/BuildYourOwnKernel">
+                    This webpage may be helpful </a>
+            </p>
+        </div>
+        <div>
+            <p class="section">Testing</p>
+            <p>
+Once your system has rebooted, you are going to want to execute your C program
+which used your new system call. To check to see if your syscall worked, look
+in your kernel log. This can be done using the following command on the
+commandline
+                <div class = "codeblock">
+                    <pre><code>
+tail -f /var/log/kern.log
+                    </code></pre>
+                </div>
+            </p>
+            <p>
+My output looked like this
+            </p>
+                <img src="./helloWorldWorks.png">
+            <p>
+                <a href= "http://askubuntu.com/questions/15647/where-can-i-find-the-kernel-logs">
+                    This webpage may be helpful </a>
+            </p>
+            <p>
+And you're done!
+            </p>
+            </p>
+        </div>
+        <div>
+            <p class ="section">References</p>
+            <p>
+                <a href= "http://myweb.lmu.edu/dondi/share/os/kernel-build-and-mod.pdf">Dr. Dionisio</a>
+            </p>
+            <p>
+                <a href= "http://stackoverflow.com/questions/12469836/how-to-write-system-calls-on-debian-ubuntu">StackOverflow.com</a>
+            </p>
+            <p>
+                <a href= "https://wiki.ubuntu.com/Kernel/BuildYourOwnKernel">Wiki.Ubuntu.com</a>
+            </p>
+            <p>
+                <a href= "http://askubuntu.com/questions/15647/where-can-i-find-the-kernel-logs">AskUbuntu.com</a>
+            </p>
+            <p>
+                <a href= "http://arvindsraj.wordpress.com/2012/10/05/adding-hello-world-system-call-to-linux/">Arvindsraj</a>
+            </p>
+        </div>
+    </body>
+</html>

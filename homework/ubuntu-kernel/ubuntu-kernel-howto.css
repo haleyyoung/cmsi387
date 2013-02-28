@@ -1,0 +1,49 @@
+body {
+    background-color: black;
+    color: white;
+}
+
+#pageTitle {
+    font-size:35px;
+    color: #9900CC;
+    text-align: center;
+}
+
+#note {
+    font-size:20px;
+    color: #CC0052;
+    text-align: center;
+}
+
+.section {
+    font-size:30px;
+    color: #00CC7A;
+}
+
+.codeblock {
+    background-color: #5C007A;
+    font-size: 13px;
+    border-style: solid;
+    border-color: #B20047;
+    width: 80%;
+    position: relative;
+    left: 10%;
+}
+
+div {
+    width: 90%;
+    position: relative;
+    left: 5%;
+    margin-top: 1%;
+    margin-bottom: 1%;
+}
+
+a {
+    color: #19D1FF;
+}
+
+img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
