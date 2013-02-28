@@ -10,9 +10,9 @@ From Dr. Dionisio's "Linux Kernel Building and Modification -- A Conceptual Guid
 >  * Linux kernel code supports multiple architectures--be aware that not all source files will apply to your build
 >  * Configure the kernel (for your architecture)
 >  * Start the actual build sequence
->  * Install the build products [^1]
+>  * Install the build products
 
-[^1]: [Here is Dr. Dionisio's full handout](http://myweb.lmu.edu/dondi/share/os/kernel-build-and-mod.pdf)
+[Here is Dr. Dionisio's full handout](http://myweb.lmu.edu/dondi/share/os/kernel-build-and-mod.pdf)
 
 Modification Steps
 ==================
@@ -81,7 +81,9 @@ ubuntu-quantal/include/linux/syscalls.h
 
 The line of code to be added is
 
-"asmlinkage long sys_helloworld(void);"
+~~~
+asmlinkage long sys_helloworld(void);
+~~~
 
 and should be added just before the last line of the file which is "#endif".
 
@@ -129,9 +131,9 @@ You will want to add "test/" to the end of this line, resulting in
 
 ~~~
 core-y		+= kernel/ mm/ fs/ ipc/ security/ crypto/ block/ test/
-~~~ [^2]
+~~~
 
-[^2]: [This webpage may be helpful](http://stackoverflow.com/questions/12469836/how-to-write-system-calls-on-debian-ubuntu)
+[This webpage may be helpful](http://stackoverflow.com/questions/12469836/how-to-write-system-calls-on-debian-ubuntu)
 
 
 
@@ -153,7 +155,7 @@ int main(int argc, char *argv[]) {
   }
   return result;
 }
-~~~ [^1]
+~~~
 
 Build Steps
 ===========
@@ -178,9 +180,9 @@ using the following two commands
 `
 sudo dpkg -i linux*3.5.0-25*.deb
 sudo reboot
-` [^3]
+`
 
-[^3]: [This webpage may be helpful](https://wiki.ubuntu.com/Kernel/BuildYourOwnKernel)
+[This webpage may be helpful](https://wiki.ubuntu.com/Kernel/BuildYourOwnKernel)
 
 Testing
 =======
