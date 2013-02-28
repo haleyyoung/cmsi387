@@ -1,12 +1,43 @@
-Used this webpage for guidance:
-http://arvindsraj.wordpress.com/2012/10/05/adding-hello-world-system-call-to-linux/
-http://stackoverflow.com/questions/12469836/how-to-write-system-calls-on-debian-ubuntu
-https://wiki.ubuntu.com/Kernel/BuildYourOwnKernel
+*Note that this howto page is specifically for the Ubuntu 3.5.0-25-generic kernel*
+
+General Building Steps
+======================
+
+From Dr. Dionisio's "Linux Kernel Building and Modification -- A Conceptual Guide" handout:
+
+>  * Acquire the kernel source code
+>  * Acquire prerequisite software
+>  * Linux kernel code supports multiple architectures--be aware that not all source files will apply to your build
+>  * Configure the kernel (for your architecture)
+>  * Start the actual build sequence
+>  * Install the build products
+
+Modification Steps
+==================
+
+The first thing you need to do is add your new syscall to the syscall table.
+Depending on the kernel you've obtained, the location of this file may be
+different from that described here, but in general, you're looking for a file
+with a name close to "syscall_32.tbl". In my case, the file is located in
+
+    ubuntu-quantal/arch/x86/syscalls/syscall_32.tbl
+
+Once you locate this file, you will want to add the following line to the end of
+the list of syscalls. Note that the first number is the hardcoded number that
+can be used to directly call our new helloworld syscall. The second number
+denotes the type of system we're working with. The third element of the line is
+the name of the syscall if one wanted to call it on the commandline. The fourth
+element of this line of code is the name of the function that will be called
+when the system call is called.
+
+~~~
+350 i386    helloworld      sys_helloworld
+~~~
+
 
 Add your syscall to the syscall table - add your syscall to the file:
 
-ubuntu-quantal/arch/x86/syscalls/syscall_32.tbl
-"350 i386    helloworld      sys_helloworld"
+""
 
 ubuntu-quantal/arch/m32r/kernel/syscall_table.S 
 "    .long sys_helloworld"
@@ -70,3 +101,11 @@ int main(int argc, char *argv[]) {
 to check to see if your syscall worked, check your kernel log:
 
 use this command "tail -f /var/log/kern.log" to see the kernel log and wait to see your hello-world output at the end of the list!
+
+
+
+
+Used this webpage for guidance:
+http://arvindsraj.wordpress.com/2012/10/05/adding-hello-world-system-call-to-linux/
+http://stackoverflow.com/questions/12469836/how-to-write-system-calls-on-debian-ubuntu
+https://wiki.ubuntu.com/Kernel/BuildYourOwnKernel
