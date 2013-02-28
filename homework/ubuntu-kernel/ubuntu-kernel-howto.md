@@ -22,7 +22,9 @@ Depending on the kernel you've obtained, the location of this file may be
 different from that described here, but in general, you're looking for a file
 with a name close to "syscall_32.tbl". In my case, the file is located in
 
-    ubuntu-quantal/arch/x86/syscalls/syscall_32.tbl
+`
+ubuntu-quantal/arch/x86/syscalls/syscall_32.tbl
+`
 
 Once you locate this file, you will want to add the following line to the end of
 the list of syscalls. Note that the first number is the hardcoded number that
@@ -41,7 +43,9 @@ your system call is going to generate. In this case, since we're just writing a
 simple hello world, we are just going to return a long. The location of this
 file in my kernel is
 
+`
 ubuntu-quantal/arch/sh/kernel/syscalls_32.S
+`
 
 And the line of code you want to add is
 
@@ -55,7 +59,9 @@ Now you need to define helloworld as a constant which will be used by the kernel
 when you call your helloworld system call. The place to do this is in the header
 file called unistd_32.h which is located in
 
+`
 ubuntu-quantal/arch/sh/include/asm/unistd_32.h
+`
 
 You need to add the following line to the end of the file just before the line
 which defines the number of system calls in the kernel. The number should be
@@ -77,7 +83,9 @@ Next, we need to tell the syscalls header file what signature it's looking for
 when searching for your system call. This is done by adding the a line of code
 to the syscalls.h file which is located in
 
+`
 ubuntu-quantal/include/linux/syscalls.h
+`
 
 The line of code to be added is
 
@@ -119,7 +127,9 @@ In order for the build process to even search the "/test" folder for a Makefile,
 the folder needs to be added to the top-level Makefile which is automatically
 read during the build. The location of this file is
 
+`
 ubuntu-quantal/Makfile
+`
 
 There is a line about 80 or so lines into the file which says
 
@@ -163,14 +173,18 @@ Build Steps
 Now it's time to actually build your newly modified kernel! From the root
 directory of your kernel, on the commandline, enter this command
 
+`
 fakeroot debian/rules clean
+`
 
 Once this is done, you're ready to call the command which builds the kernel.
 *(Note that this takes me 2 hours so don't be alarmed if it takes your machine
 a while to complete this task. Also note that I am running in a virtual machine
 on a laptop, so if you're on a desktop, things may run more quickly)*
 
+`
 fakeroot debian/rules binary-headers binary-generic
+`
 
 Once the build it complete, there should be three new .deb files in the
 directory above your kernel source. These need to be depackaged and then you
@@ -179,6 +193,7 @@ using the following two commands
 
 `
 sudo dpkg -i linux*3.5.0-25*.deb
+
 sudo reboot
 `
 
@@ -191,10 +206,11 @@ Once your system has rebooted, you are going to want to execute your C program
 which used your new system call. To check to see if your syscall worked, look
 in your kernel log. This can be done using the following command on the
 commandline
+`
+tail -f /var/log/kern.log
+`
 
-tail -f /var/log/kern.log [^4]
-
-[^4]: [This webpage may be helpfulan example](http://askubuntu.com/questions/15647/where-can-i-find-the-kernel-logs)
+[This webpage may be helpful](http://askubuntu.com/questions/15647/where-can-i-find-the-kernel-logs)
 
 And you're done! 
 
@@ -203,7 +219,11 @@ References
 ==========
 
 http://myweb.lmu.edu/dondi/share/os/kernel-build-and-mod.pdf
+
 http://stackoverflow.com/questions/12469836/how-to-write-system-calls-on-debian-ubuntu
+
 https://wiki.ubuntu.com/Kernel/BuildYourOwnKernel
+
 http://askubuntu.com/questions/15647/where-can-i-find-the-kernel-logs
+
 http://arvindsraj.wordpress.com/2012/10/05/adding-hello-world-system-call-to-linux/
