@@ -9,8 +9,8 @@ body {
     text-align: center;
 }
 
-#note {
-    font-size:20px;
+.note {
+    font-size:18px;
     color: #CC0052;
     text-align: center;
 }

@@ -7,7 +7,7 @@
     </head>
     <body>
         <div id= "pageTitle">How To Add Your Own System Call from a Vanilla Ubuntu 12 Install</div>
-        <p id = "note">*Note that this how-to page is specifically for the Ubuntu 3.5.0-25-generic kernel*</p>
+        <p class = "note">*Note that this how-to page is specifically for the Ubuntu 3.5.0-25-generic kernel*</p>
         <div id = "building">
             <p class ="section">General Building Steps</p>
             <p>From Dr. Dionisio's "Linux Kernel Building and Modification -- A Conceptual Guide" handout:
@@ -49,9 +49,9 @@ when the system call is called.
                     </code></pre>
                 </div>
             <p>
-Next, in the syscalls_32.S file, you need to tell the kernel what type of output
+Next, in the "syscalls_32.S" file, you need to tell the kernel what type of output
 your system call is going to generate. In this case, since we're just writing a
-simple hello world, we are just going to return a long. The location of this
+simple hello world, we are going to return a long. The location of this
 file in my kernel is
                 <div class = "codeblock">
                     <pre><code>
@@ -69,7 +69,7 @@ You're going to add this at the end of the file.
             <p>
 Now you need to define helloworld as a constant which will be used by the kernel
 when you call your helloworld system call. The place to do this is in the header
-file called unistd_32.h which is located in
+file called "unistd_32.h" which is located in
                 <div class = "codeblock">
                     <pre><code>
 ubuntu-quantal/arch/sh/include/asm/unistd_32.h
@@ -94,8 +94,8 @@ of code.
             </p>
             <p>
 Next, we need to tell the syscalls header file what signature it's looking for
-when searching for your system call. This is done by adding the a line of code
-to the syscalls.h file which is located in
+when searching for your system call. This is done by adding a line of code
+to the "syscalls.h" file which is located in
                 <div class = "codeblock">
                     <pre><code>
 ubuntu-quantal/include/linux/syscalls.h
@@ -114,12 +114,12 @@ Finally, you get to write your system call! Create a file with the name
 "sys_helloworld.c". This corresponds to the name we added to the syscall table.
 You will want to put this file in a new directory located in the root directory
 of your (used-to-be!)vanilla kernel. My folder is called "/test", but you can
-call it whatever you like, but for the rest of this *howto*, I will be referring
-to this folder as "test". So save your .c file in this new folder and for a
+call it whatever you like, but for the rest of this tutorial, I will be referring
+to this folder as "/test". So save your .c file in this new folder and for a
 simple hello world program, all you need in the file is
                 <div class = "codeblock">
                     <pre><code>
-#include <linux/kernel.h>
+#include &#60;linux/kernel.h&#62;
 
 asmlinkage long sys_helloworld(void) {
     printk("Hello world! This freaking rocks!\n");
@@ -161,7 +161,7 @@ core-y		+= kernel/ mm/ fs/ ipc/ security/ crypto/ block/ test/
                     </code></pre>
                 </div>
                 <a href="http://stackoverflow.com/questions/12469836/how-to-write-system-calls-on-debian-ubuntu">
-                    This webpage may be helpful</a>
+                    For modifications help...</a>
             </p>
             <p>
 The last step before building your kernel is writing a C program which calls
@@ -169,10 +169,10 @@ your new system call. This can be located wherever you like and named whatever
 you like, just like a normal C program. The contents of my C program are
                 <div class = "codeblock">
                     <pre><code>
-#include <linux/types.h>
-#include <linux/unistd.h>
-#include <sys/types.h>
-#include <string.h>
+#include &#60;linux/types.h&#62;
+#include &#60;linux/unistd.h&#62;
+#include &#60;sys/types.h&#62;
+#include &#60;string.h&#62;
 
 int main(int argc, char *argv[]) {
   int result = syscall(350);
@@ -197,10 +197,10 @@ fakeroot debian/rules clean
                     </code></pre>
                 </div>
 Once this is done, you're ready to call the command which builds the kernel.
-                <p>
+                <p class= "note">
                 *(Note that this takes me 2 hours so don't be alarmed if it takes
                 your machine a while to complete this task. Also note that I am
-                running in a virtual machine\on a laptop, so if you're on a desktop,
+                running in a virtual machine/on a laptop, so if you're on a desktop,
                 things may run more quickly)*
                 </p>
                 <div class = "codeblock">
@@ -220,14 +220,14 @@ sudo reboot
                     </code></pre>
                 </div>
                 <a href= "https://wiki.ubuntu.com/Kernel/BuildYourOwnKernel">
-                    This webpage may be helpful </a>
+                    For build help...</a>
             </p>
         </div>
         <div>
             <p class="section">Testing</p>
             <p>
 Once your system has rebooted, you are going to want to execute your C program
-which used your new system call. To check to see if your syscall worked, look
+which uses your new system call. To check to see if your syscall worked, look
 in your kernel log. This can be done using the following command on the
 commandline
                 <div class = "codeblock">
@@ -242,7 +242,7 @@ My output looked like this
                 <img src="./helloWorldWorks.png">
             <p>
                 <a href= "http://askubuntu.com/questions/15647/where-can-i-find-the-kernel-logs">
-                    This webpage may be helpful </a>
+                    For kernel log help...</a>
             </p>
             <p>
 And you're done!
