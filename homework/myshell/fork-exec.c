@@ -11,12 +11,23 @@ int main() {
     /* String to hold the command to run. */
     char command[256];
     while (1) {
+        const char *delimiter = " ";
+        char *context;
         printf("Enter the command to run: ");
-//        scanf("%s", command);
         fgets(command, 256, stdin);
         int commandLength = strlen(command);
+        // Change newline to terminating 0
         command[commandLength - 1] = 0;
-        printf("%s", command);
+        printf("COMMAND %s\n", command);
+        char *argument = strtok_r(command, delimiter, &context);
+        char *realCommand = argument;
+        // Found this for loop on: http://www.gsp.com/cgi-bin/man.cgi?topic=strtok_r
+        for(argument = strtok_r(command, delimiter, &context);
+            argument;
+            argument = strtok_r(NULL, delimiter, &context)){
+                printf("ARGUMENT %s\n", argument);
+                printf("command NOW %s\n", realCommand);
+        }
 
         /* Variable that will store the fork result. */
         pid_t pid;
