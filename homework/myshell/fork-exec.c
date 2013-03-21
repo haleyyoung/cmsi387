@@ -59,7 +59,9 @@ int main() {
         } else {
             /* Parent process. */
             int result;
-            if (strcmp(args[i - 1], "&") != 0) {
+            printf("%d\n", (strcmp(args[i - 1], "&") != 0));
+            if (args[0] && strcmp(args[i - 2], "&") != 0) {
+                printf("here\n");
                 wait(&result);
             }
             printf("All done; result = %d\n", result);
