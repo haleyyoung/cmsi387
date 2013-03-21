@@ -1,6 +1,7 @@
 #include <sys/types.h>
 #include <stdio.h>
 #include <unistd.h>
+#include <string.h>
 
 /**
  * This program demonstrates the use of the fork() and exec()
@@ -11,7 +12,11 @@ int main() {
     char command[256];
     while (1) {
         printf("Enter the command to run: ");
-        scanf("%s", command);
+//        scanf("%s", command);
+        fgets(command, 256, stdin);
+        int commandLength = strlen(command);
+        command[commandLength - 1] = 0;
+        printf("%s", command);
 
         /* Variable that will store the fork result. */
         pid_t pid;
