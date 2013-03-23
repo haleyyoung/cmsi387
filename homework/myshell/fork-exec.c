@@ -43,6 +43,32 @@ int main() {
                     printf("command NOW , %d, %s\n", i, realCommand);    
         }
 
+        if (args[0]) {
+            int lastArgumentLength = strlen(args[i - 2]);
+            printf("what?!? %d, %s\n", i, args[i - 2]);
+        }
+
+            printf("command %s\n", command);
+            printf("checking %c\n", args[i-2][strlen(args[i- 2]) - 1]);
+
+        // Check if we need to strip off the "&" from the command or last argument
+        if (strcmp(&command[strlen(command) - 1], "&") == 0) {
+            int position = args[0] ? (i - 1) : 0;
+            command[strlen(command) - 1] = 0;
+            args[position] = "&";
+            i++;
+            
+            printf("modified command %s , args %s\n", command, args[i-2]);
+        }
+        else if (args[0] && (strcmp(&args[i- 2][strlen(args[i - 2]) - 1], "&") == 0)
+            && (strlen(args[i - 2]) != 1)) {
+            args[i - 1] = "&";
+            args[i - 2][strlen(args[i- 2]) - 1] = 0;
+            i++;
+            
+            printf("modified args %s , args %s\n", args[i - 3], args[i-2]);
+        }
+
         /* Variable that will store the fork result. */
         pid_t pid;
 
@@ -59,7 +85,7 @@ int main() {
         } else {
             /* Parent process. */
             int result;
-            printf("%d\n", (strcmp(args[i - 1], "&") != 0));
+            printf("%d\n", (strcmp(args[i - 2], "&") != 0));
             if (args[0] && strcmp(args[i - 2], "&") != 0) {
                 printf("here\n");
                 wait(&result);
