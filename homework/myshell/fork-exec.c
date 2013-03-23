@@ -30,17 +30,10 @@ int main() {
         for(argument = strtok_r(command, delimiter, &context), i = 0;
             argument;
             argument = strtok_r(NULL, delimiter, &context), i++){
-                // Save command
-                if (i == 0) {
-                    realCommand = argument;
-                    args[i] = argument;
-             //       printf("command NOW %s\n", realCommand);                    
-                }
-                // Save command arguments
-                else {
-                    args[i] = argument;
+                // Save command and arguments
+                args[i] = argument;
            //         printf("ARGUMENT , %d , %s\n", (i-1), args[i - 1]);
-                }
+
          //           printf("command NOW , %d, %s\n", i, realCommand);    
         }
 
@@ -48,15 +41,15 @@ int main() {
      //       printf("checking %c\n", args[i-2][strlen(args[i- 2]) - 1]);
 
         // Check if we need to strip off the "&" from the command or last argument
-        if (strcmp(&command[strlen(command) - 1], "&") == 0) {
-            int position = args[0] ? i : 0;
-            command[strlen(command) - 1] = 0;
+        if (strcmp(&args[0][strlen(args[0]) - 1], "&") == 0) {
+            int position = args[1] ? i : 1;
+            args[0][strlen(args[0]) - 1] = 0;
             args[position] = "&";
             i++;
             
    //         printf("modified command %s , args %s\n", command, args[i-2]);
         }
-        else if (args[0] && (strcmp(&args[i- 1][strlen(args[i - 1]) - 1], "&") == 0)
+        else if ((strcmp(&args[i - 1][strlen(args[i - 1]) - 1], "&") == 0)
             && (strlen(args[i - 1]) != 1)) {
             args[i] = "&";
             args[i - 1][strlen(args[i- 1]) - 1] = 0;
@@ -65,6 +58,14 @@ int main() {
  //           printf("modified args %s , args %s\n", args[i - 3], args[i-2]);
         }
         
+        int waitCharacterPresent = 0;
+        if (strcmp(&args[i - 1][0], "&") == 0) {
+        printf("setting last character");
+            waitCharacterPresent = 1;
+            
+            // Set I back one so we overwrite the "&" when we assign NULL
+            i--;
+        }
         args[i] = NULL;
 
         /* Variable that will store the fork result. */
@@ -81,15 +82,15 @@ int main() {
             printf("Running...\n");
             int m;
             for (m = 0; m < i; m++) {
-            printf("command and args %s , %s\n", command, args[m]);
+            printf("command and args %s\n", args[m]);
             }
             
-            execvp(command, args);
+            execvp(args[0], args);
         } else {
             /* Parent process. */
             int result;
   //          printf("%d\n", (strcmp(args[i - 2], "&") != 0));
-            if (args[0] && strcmp(args[i - 1], "&") != 0) {
+            if (!waitCharacterPresent) {
                 printf("here\n");
                 wait(&result);
             }
