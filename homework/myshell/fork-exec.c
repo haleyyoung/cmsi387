@@ -33,11 +33,12 @@ int main() {
                 // Save command
                 if (i == 0) {
                     realCommand = argument;
+                    args[i] = argument;
              //       printf("command NOW %s\n", realCommand);                    
                 }
                 // Save command arguments
                 else {
-                    args[i - 1] = argument;
+                    args[i] = argument;
            //         printf("ARGUMENT , %d , %s\n", (i-1), args[i - 1]);
                 }
          //           printf("command NOW , %d, %s\n", i, realCommand);    
@@ -48,21 +49,23 @@ int main() {
 
         // Check if we need to strip off the "&" from the command or last argument
         if (strcmp(&command[strlen(command) - 1], "&") == 0) {
-            int position = args[0] ? (i - 1) : 0;
+            int position = args[0] ? i : 0;
             command[strlen(command) - 1] = 0;
             args[position] = "&";
             i++;
             
    //         printf("modified command %s , args %s\n", command, args[i-2]);
         }
-        else if (args[0] && (strcmp(&args[i- 2][strlen(args[i - 2]) - 1], "&") == 0)
-            && (strlen(args[i - 2]) != 1)) {
-            args[i - 1] = "&";
-            args[i - 2][strlen(args[i- 2]) - 1] = 0;
+        else if (args[0] && (strcmp(&args[i- 1][strlen(args[i - 1]) - 1], "&") == 0)
+            && (strlen(args[i - 1]) != 1)) {
+            args[i] = "&";
+            args[i - 1][strlen(args[i- 1]) - 1] = 0;
             i++;
             
  //           printf("modified args %s , args %s\n", args[i - 3], args[i-2]);
         }
+        
+        args[i] = NULL;
 
         /* Variable that will store the fork result. */
         pid_t pid;
@@ -76,13 +79,18 @@ int main() {
         } else if (pid == 0) {
             /* Child process. */
             printf("Running...\n");
-            execlp(command, command, NULL);
+            int m;
+            for (m = 0; m < i; m++) {
+            printf("command and args %s , %s\n", command, args[m]);
+            }
+            
+            execvp(command, args);
         } else {
             /* Parent process. */
             int result;
   //          printf("%d\n", (strcmp(args[i - 2], "&") != 0));
-            if (args[0] && strcmp(args[i - 2], "&") != 0) {
-  //              printf("here\n");
+            if (args[0] && strcmp(args[i - 1], "&") != 0) {
+                printf("here\n");
                 wait(&result);
             }
             printf("All done; result = %d\n", result);
