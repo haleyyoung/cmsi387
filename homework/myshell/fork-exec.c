@@ -32,13 +32,7 @@ int main() {
             argument = strtok_r(NULL, delimiter, &context), i++){
                 // Save command and arguments
                 args[i] = argument;
-           //         printf("ARGUMENT , %d , %s\n", (i-1), args[i - 1]);
-
-         //           printf("command NOW , %d, %s\n", i, realCommand);    
         }
-
-       //     printf("command %s\n", command);
-     //       printf("checking %c\n", args[i-2][strlen(args[i- 2]) - 1]);
 
         // Check if we need to strip off the "&" from the command or last argument
         if (strcmp(&args[0][strlen(args[0]) - 1], "&") == 0) {
@@ -46,16 +40,12 @@ int main() {
             args[0][strlen(args[0]) - 1] = 0;
             args[position] = "&";
             i++;
-            
-   //         printf("modified command %s , args %s\n", command, args[i-2]);
         }
         else if ((strcmp(&args[i - 1][strlen(args[i - 1]) - 1], "&") == 0)
             && (strlen(args[i - 1]) != 1)) {
             args[i] = "&";
             args[i - 1][strlen(args[i- 1]) - 1] = 0;
             i++;
-            
- //           printf("modified args %s , args %s\n", args[i - 3], args[i-2]);
         }
         
         int waitCharacterPresent = 0;
@@ -63,7 +53,7 @@ int main() {
         printf("setting last character");
             waitCharacterPresent = 1;
             
-            // Set I back one so we overwrite the "&" when we assign NULL
+            // Set i back one so we overwrite the "&" when we assign NULL
             i--;
         }
         args[i] = NULL;
@@ -85,11 +75,19 @@ int main() {
             printf("command and args %s\n", args[m]);
             }
             
-            execvp(args[0], args);
+            if (strcmp(args[0], "cd") == 0) {
+                printf ("directory %s", args[1]);
+                int check = chdir(args[1]);
+                printf("check %d", check);
+                char cwd[1024];
+                printf("current working directory %s\n", getcwd(cwd, sizeof(cwd)));
+            }
+            else {
+                execvp(args[0], args);
+            }
         } else {
             /* Parent process. */
             int result;
-  //          printf("%d\n", (strcmp(args[i - 2], "&") != 0));
             if (!waitCharacterPresent) {
                 printf("here\n");
                 wait(&result);
