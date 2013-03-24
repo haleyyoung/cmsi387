@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <string.h>
+#include <errno.h>
 
 /**
  * This program demonstrates the use of the fork() and exec()
@@ -76,11 +77,16 @@ int main() {
             }
             
             if (strcmp(args[0], "cd") == 0) {
-                printf ("directory %s", args[1]);
-                int check = chdir(args[1]);
-                printf("check %d", check);
+                char *directory = args[1];
+                printf ("directory %s\n", directory);
+                int check = chdir(directory);
+                printf("check %d\n", check);
+                printf("string %s\n", strerror(errno));
                 char cwd[1024];
                 printf("current working directory %s\n", getcwd(cwd, sizeof(cwd)));
+            }
+            else if(strcmp(args[0], "helloworld") == 0) {
+                  syscall(350);
             }
             else {
                 execvp(args[0], args);
