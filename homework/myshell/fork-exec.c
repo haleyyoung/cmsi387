@@ -76,8 +76,8 @@ int main() {
                 chdir(args[1]);
             }
 
-            // Easter Egg - if we get the "helloworld" command
-            else if(strcmp(args[0], "helloworld") == 0) {
+            // Easter Egg - if we get the "secret-system-call" command
+            else if(strcmp(args[0], "secret-system-call") == 0) {
                 syscall(350);
             }
 
