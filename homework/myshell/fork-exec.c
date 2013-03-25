@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <string.h>
-#include <errno.h>
 
 /**
  * This program demonstrates the use of the fork() and exec()
@@ -22,16 +21,15 @@ int main() {
         int commandLength = strlen(command);
         // Change newline to terminating 0
         command[commandLength - 1] = 0;
-   //     printf("COMMAND %s\n", command);
 
-        char *argument; //= strtok_r(command, delimiter, &context);
-        char *realCommand; //= argument;
+        char *argument;
+        char *realCommand;
 
         // Found this for-loop on: http://www.gsp.com/cgi-bin/man.cgi?topic=strtok_r
         for(argument = strtok_r(command, delimiter, &context), i = 0;
             argument;
             argument = strtok_r(NULL, delimiter, &context), i++){
-                // Save command and arguments
+                // Save command and arguments, the command will be in args[0]
                 args[i] = argument;
         }
 
@@ -48,15 +46,15 @@ int main() {
             args[i - 1][strlen(args[i- 1]) - 1] = 0;
             i++;
         }
-        
+
         int waitCharacterPresent = 0;
+
         if (strcmp(&args[i - 1][0], "&") == 0) {
-        printf("setting last character");
             waitCharacterPresent = 1;
-            
             // Set i back one so we overwrite the "&" when we assign NULL
             i--;
         }
+
         args[i] = NULL;
 
         /* Variable that will store the fork result. */
@@ -68,26 +66,21 @@ int main() {
             /* Error condition. */
             fprintf(stderr, "Fork failed\n");
             return -1;
+
         } else if (pid == 0) {
             /* Child process. */
             printf("Running...\n");
-            int m;
-            for (m = 0; m < i; m++) {
-            printf("command and args %s\n", args[m]);
-            }
-            
+
+            // If we get the "cd" command
             if (strcmp(args[0], "cd") == 0) {
-                char *directory = args[1];
-                printf ("directory %s\n", directory);
-                int check = chdir(directory);
-                printf("check %d\n", check);
-                printf("string %s\n", strerror(errno));
-                char cwd[1024];
-                printf("current working directory %s\n", getcwd(cwd, sizeof(cwd)));
+                chdir(args[1]);
             }
+
+            // Easter Egg - if we get the "helloworld" command
             else if(strcmp(args[0], "helloworld") == 0) {
-                  syscall(350);
+                syscall(350);
             }
+
             else {
                 execvp(args[0], args);
             }
@@ -95,7 +88,6 @@ int main() {
             /* Parent process. */
             int result;
             if (!waitCharacterPresent) {
-                printf("here\n");
                 wait(&result);
             }
             printf("All done; result = %d\n", result);
