@@ -14,6 +14,7 @@ int main() {
     int i;
     while (!feof(stdin)) {
         const char *delimiter = " ";
+        int cdCommandPresent = 0;
         char *context;
         printf("Enter the command to run: ");
         fgets(command, 256, stdin);
@@ -59,6 +60,9 @@ int main() {
             // Set i back one so we overwrite the "&" when we assign NULL
             i--;
         }
+        if(strcmp(args[0], "cd") == 0) {
+            cdCommandPresent = 1;
+        }
 
         args[i] = NULL;
 
@@ -89,9 +93,13 @@ int main() {
             //     of whether you are in a child or the parent.  Then issue
             //     a cd command and observe how your prompts look.
             if (strcmp(args[0], "cd") == 0) {
+                cdCommandPresent = 0;
                 chdir(args[1]);
             }
 
+            if(cdCommandPresent){
+                printf("in child\n");
+            }
             // Easter Egg - if we get the "secret-system-call" command
             else if(strcmp(args[0], "secret-system-call") == 0) {
                 syscall(350);
@@ -103,6 +111,10 @@ int main() {
         } else {
             /* Parent process. */
             int result;
+            if(cdCommandPresent){
+                printf("in parent\n");
+                chdir(args[1]);
+            }
             if (!waitCharacterPresent) {
                 wait(&result);
             }
