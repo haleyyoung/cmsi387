@@ -60,65 +60,40 @@ int main() {
             // Set i back one so we overwrite the "&" when we assign NULL
             i--;
         }
+        // "cd" Command
         if(strcmp(args[0], "cd") == 0) {
-            cdCommandPresent = 1;
+            chdir(args[1]);
         }
+        // Easter Egg - if we get the "secret-system-call" command
+        else if(strcmp(args[0], "secret-system-call") == 0) {
+            syscall(350);
+        }
+        else{
 
-        args[i] = NULL;
+            args[i] = NULL;
 
-        /* Variable that will store the fork result. */
-        pid_t pid;
+            /* Variable that will store the fork result. */
+            pid_t pid;
 
-        /* Perform the actual fork. */
-        pid = fork();
-        if (pid < 0) {
-            /* Error condition. */
-            fprintf(stderr, "Fork failed\n");
-            return -1;
+            /* Perform the actual fork. */
+            pid = fork();
+            if (pid < 0) {
+                /* Error condition. */
+                fprintf(stderr, "Fork failed\n");
+                return -1;
 
-        } else if (pid == 0) {
-            /* Child process. */
-            printf("Running...\n");
-
-            // If we get the "cd" command
-
-            // JD: This contributes to your cd problems---you are changing
-            //     directories in the *child*.  The parent never sees this.
-            //     And in fact you will have dueling prompts now, because
-            //     upon a cd, the child will also be in an fgets loop.
-            //
-            //     Try this: in here, set some variable that "remembers"
-            //     that you are in a child.  Then, in the prompt above,
-            //     put a little conditional that displays some indication
-            //     of whether you are in a child or the parent.  Then issue
-            //     a cd command and observe how your prompts look.
-            if (strcmp(args[0], "cd") == 0) {
-                cdCommandPresent = 0;
-                chdir(args[1]);
-            }
-
-            if(cdCommandPresent){
-                printf("in child\n");
-            }
-            // Easter Egg - if we get the "secret-system-call" command
-            else if(strcmp(args[0], "secret-system-call") == 0) {
-                syscall(350);
-            }
-
-            else {
+            } else if (pid == 0) {
+                /* Child process. */
+                printf("Running...\n");
                 execvp(args[0], args);
+            } else {
+                /* Parent process. */
+                int result;
+                if (!waitCharacterPresent) {
+                    wait(&result);
+                }
+                printf("All done; result = %d\n", result);
             }
-        } else {
-            /* Parent process. */
-            int result;
-            if(cdCommandPresent){
-                printf("in parent\n");
-                chdir(args[1]);
-            }
-            if (!waitCharacterPresent) {
-                wait(&result);
-            }
-            printf("All done; result = %d\n", result);
         }
     }
     return 0;
