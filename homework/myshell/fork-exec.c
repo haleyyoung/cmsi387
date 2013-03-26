@@ -14,22 +14,30 @@ int main() {
     int i;
     while (!feof(stdin)) {
         const char *delimiter = " ";
+        const char *waitCharacter = "&";
         int cdCommandPresent = 0;
+        int waitCharacterPresent = 0;
+        char *argument;
         char *context;
         printf("Enter the command to run: ");
         fgets(command, 256, stdin);
 
         int commandLength = strlen(command);
+
         // Change newline to terminating 0
         command[commandLength - 1] = 0;
 
-        // JD: This is a better place to check for '&' as the last
-        //     character---it avoids all of the post-tokenization work.
-        //     Check for the character here and wipe it out with '\0'
-        //     before even dealing with your arguments.
+        // Remove any trailing spaces
+        while(strcmp(&command[commandLength - 2], delimiter) == 0){
+            command[commandLength - 2] = 0;
+            commandLength--;
+        }
 
-        char *argument;
-        char *realCommand;
+        // Check if we need to strip off the "&" from the command or last argument
+        if(strcmp(&command[commandLength - 2], waitCharacter) == 0){
+            command[commandLength - 2] = 0;
+            waitCharacterPresent = 1;
+        }
 
         // Found this for-loop on: http://www.gsp.com/cgi-bin/man.cgi?topic=strtok_r
         for(argument = strtok_r(command, delimiter, &context), i = 0;
@@ -39,35 +47,16 @@ int main() {
                 args[i] = argument;
         }
 
-        // Check if we need to strip off the "&" from the command or last argument
-        if (strcmp(&args[0][strlen(args[0]) - 1], "&") == 0) {
-            int position = args[1] ? i : 1;
-            args[0][strlen(args[0]) - 1] = 0;
-            args[position] = "&";
-            i++;
-        }
-        else if ((strcmp(&args[i - 1][strlen(args[i - 1]) - 1], "&") == 0)
-            && (strlen(args[i - 1]) != 1)) {
-            args[i] = "&";
-            args[i - 1][strlen(args[i- 1]) - 1] = 0;
-            i++;
-        }
-
-        int waitCharacterPresent = 0;
-
-        if (strcmp(&args[i - 1][0], "&") == 0) {
-            waitCharacterPresent = 1;
-            // Set i back one so we overwrite the "&" when we assign NULL
-            i--;
-        }
-        // "cd" Command
+        // "cd" command
         if(strcmp(args[0], "cd") == 0) {
             chdir(args[1]);
         }
+
         // Easter Egg - if we get the "secret-system-call" command
         else if(strcmp(args[0], "secret-system-call") == 0) {
             syscall(350);
         }
+
         else{
 
             args[i] = NULL;
@@ -86,6 +75,7 @@ int main() {
                 /* Child process. */
                 printf("Running...\n");
                 execvp(args[0], args);
+
             } else {
                 /* Parent process. */
                 int result;
