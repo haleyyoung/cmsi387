@@ -22,6 +22,11 @@ int main() {
         // Change newline to terminating 0
         command[commandLength - 1] = 0;
 
+        // JD: This is a better place to check for '&' as the last
+        //     character---it avoids all of the post-tokenization work.
+        //     Check for the character here and wipe it out with '\0'
+        //     before even dealing with your arguments.
+
         char *argument;
         char *realCommand;
 
@@ -72,6 +77,17 @@ int main() {
             printf("Running...\n");
 
             // If we get the "cd" command
+
+            // JD: This contributes to your cd problems---you are changing
+            //     directories in the *child*.  The parent never sees this.
+            //     And in fact you will have dueling prompts now, because
+            //     upon a cd, the child will also be in an fgets loop.
+            //
+            //     Try this: in here, set some variable that "remembers"
+            //     that you are in a child.  Then, in the prompt above,
+            //     put a little conditional that displays some indication
+            //     of whether you are in a child or the parent.  Then issue
+            //     a cd command and observe how your prompts look.
             if (strcmp(args[0], "cd") == 0) {
                 chdir(args[1]);
             }
