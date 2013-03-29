@@ -32,14 +32,12 @@ now, or:
 
 *Difference*
 
-"Preemption by means of the stop primitive makes
-it useful to distinguish between semaphores used to
-synchronize critical sections and input/output rela-
-tionships. When a process enters a critical section,
-its section depth must be increased by one to guaran-
-tee that it will be able to complete that section,
-and, when it leaves it again, the section depth must
-be decreased by one" (Hansen, 1972, 104).
+"Preemption by means of the stop primitive makes it useful to distinguish
+between semaphores used to synchronize critical sections and input/output
+relationships. When a process enters a critical section, its section depth must
+be increased by one to guarantee that it will be able to complete that section,
+and, when it leaves it again, the section depth must be decreased by one"
+(Hansen, 1972, p. 104).
 
 This is new in relation to the other papers because they mostly talk about how
 to determine which process gets to come next, which Hansen does, but they also
@@ -93,6 +91,7 @@ conditions that Lamport believes must be satisfied.
 >(2) Read errors during writes (flickering bits): when a process writes a new
 >value to a shared variable, a sequence of reads may return any sequence of the
 >old and new values.
+
 (Szymanski, 1988, p. 622).
 
 >1. At any time, at most one computer may be in its critical section.
@@ -101,14 +100,14 @@ conditions that Lamport believes must be satisfied.
 >it halts)
 >
 >3. Any computer may halt in its noncritical section
+
 (Lamport, 1974, p. 454).
 
 *Difference*
 
-"This algorithm uses just five distinct values of shared
-memory per process. These values may be stored either in a
-single variable or in three one-bit boolean variables per
-process" (Szymanski, 1988, 626).
+"This algorithm uses just five distinct values of shared memory per process.
+These values may be stored either in a single variable or in three one-bit
+boolean variables per process" (Szymanski, 1988, p. 626).
 
 This is new in relation to Lamport's paper because she doesn't deal with the issue
 of a process dying in the middle of its critical section. Also, when it comes to
@@ -123,3 +122,52 @@ The quality of this work is good because the author is published in the ACM whic
 is a widely read Article Database. He also takes the time to set up the background
 explaining what Lamport was dealing with as well as defines some possibly misunderstood
 terms before diving into his new element of the algroithm.
+
+A simple solution to Lamport's concurrent programming problem with linear wait
+==============================================================================
+ACM SIGOPS Operating Systems Review Homepage archive
+Volume 16 Issue 1, January 1982
+Pages 10 - 13
+
+Richard M. Weatherly    Clemson University, Clemson, SC
+James F. Leathrum   Clemson University, Clemson, SC
+
+*Connection*
+
+This source is connected to the paper by Dijkstra beause it deals with the issue
+of wasting processor time.
+
+"When a P operation is attempted on a blocked semaphore, two things can happen:
+i) The blocked process remains active in a 'busy wait' condition continually
+testing the semaphore or 2) the process is deactivated freeing the processor to
+do other useful work. The 'busy wait' solution is undesirable as it wastes
+processor time and limits availability of the semaphore by making unnecessary
+memory accesses" (Weatherly and Leathrum, 1982, p. 10).
+
+"In such an implementation the different processes share the same processor and
+activity of one of the processes (i.e. a non-zero speed) will imply a zero speed
+for the others and it is then undesirable, that precious processor time is
+consumed by processes, which cannot go on anyhow" (Dijkstra, 1965, p. 27).
+
+*Difference*
+
+"There are wait loops in this scheme.
+There are no busy waits, however. A process requesting access to a semaphore
+during Queue Pointer update knows it is waiting on a definite operation, taking
+a known length of time. Therefore, a wait period, in which other useful work may
+be done, can be calculated to give a good probability of success on the retry"
+(Weatherly and Leathrum, 1982, p. 12-13).
+
+This is new in relation to Dijkstra's paper because it takes out the possibility
+of a process taking up processor time even though it's not doing any computing.
+Weatherly and Leathrum bring up a system for managing semaphore signals so that
+any waiting process knows a more detailed status of the process in the processor
+and the processor can determine whether or not a process has a good chance of
+being successful.
+
+*Quality*
+
+The quality of this work is good because the authors are published in the ACM which
+is a widely read Article Database. Like Szymansky, they take the time to set up
+the background explaining Dijkstra's problemdiving into his new element of the
+algroithm.
