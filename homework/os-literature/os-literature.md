@@ -70,36 +70,38 @@ B. K. Szymanski Rensselear Polytechnic Institute, Troy, NY
 This source is connected to the paper by Lamport beause it references the three
 conditions that Lamport believes must be satisfied.
 
-"1. Mutual exclusion: There will be at most one process executing the critical
-section at a time.
+>1. Mutual exclusion: There will be at most one process executing the critical
+>section at a time.
+>
+>2. Freedom from deadlock: The critical section will not become inaccessible to
+>all processes. This means that if a number of processes attempts to execute their
+>critical sections, then after finite amount of time some process will be allowed
+>to do so.
+>
+>3. Fairness (freedom form starvation): No process will be denied entry to its
+>critical section forever. Thus, a process requesting an entry to its critical
+>section will enter it after waiting for a finite amount of time. The stronger
+>fairness property requires that no process can enter its critical section twice
+>while another process is waiting (linear wait).
+>
+>4. Robustness: The solution should be immune to the following two types of failures:
+>
+>(1) Process failure: a prooess may repeatedly fail and restart. However, process
+>failing in the critical section, prologue or epilogue is assumed to leave the
+>respective section of code and reset all its variables to their initial values.
+>
+>(2) Read errors during writes (flickering bits): when a process writes a new
+>value to a shared variable, a sequence of reads may return any sequence of the
+>old and new values.
+(Szymanski, 1988, p. 622).
 
-2. Freedom from deadlock: The critical section will not become inaccessible to
-all processes. This means that if a number of processes attempts to execute their
-critical sections, then after finite amount of time some process will be allowed
-to do so.
-
-3. Fairness (freedom form starvation): No process will be denied entry to its
-critical section forever. Thus, a process requesting an entry to its critical
-section will enter it after waiting for a finite amount of time. The stronger
-fairness property requires that no process can enter its critical section twice
-while another process is waiting (linear wait).
-
-4. Robustness: The solution should be immune to the following two types of failures:
-
-(1) Process failure: a prooess may repeatedly fail and restart. However, process
-failing in the critical section, prologue or epilogue is assumed to leave the
-respective section of code and reset all its variables to their initial values.
-
-(2) Read errors during writes (flickering bits): when a process writes a new
-value to a shared variable, a sequence of reads may return any sequence of the
-old and new values." (Szymanski, 1988, p. 622).
-
-"1. At any time, at most one computer may be in its critical section.
-
-2. Each computer must eventually be able to enter its critical section (unless
-it halts)
-
-3. Any computer may halt in its noncritical section" (Lamport, 1974, p. 454).
+>1. At any time, at most one computer may be in its critical section.
+>
+>2. Each computer must eventually be able to enter its critical section (unless
+>it halts)
+>
+>3. Any computer may halt in its noncritical section
+(Lamport, 1974, p. 454).
 
 *Difference*
 
