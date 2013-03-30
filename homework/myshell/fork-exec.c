@@ -28,6 +28,12 @@ int main() {
         command[commandLength - 1] = 0;
 
         // Remove any trailing spaces
+        // JD: Speaking of spaces...I would have formatted the line below
+        //     like this:
+        //
+        // while (strcmp(&command[commandLength - 2], delimiter) == 0) {
+        //
+        //     Additional lines below should like this too.
         while(strcmp(&command[commandLength - 2], delimiter) == 0){
             command[commandLength - 2] = 0;
             commandLength--;
@@ -47,17 +53,17 @@ int main() {
                 args[i] = argument;
         }
 
+        // JD: Your if-else spacing is readable, but just to put in my
+        //     personal 2 cents, I reformatted it in the manner that lines
+        //     up curly braces consistently with other control structures.
+        //     See how it strikes you.
         // "cd" command
-        if(strcmp(args[0], "cd") == 0) {
+        if (strcmp(args[0], "cd") == 0) {
             chdir(args[1]);
-        }
-
-        // Easter Egg - if we get the "secret-system-call" command
-        else if(strcmp(args[0], "secret-system-call") == 0) {
+        } else if (strcmp(args[0], "secret-system-call") == 0) {
+            // Easter Egg - if we get the "secret-system-call" command
             syscall(350);
-        }
-
-        else{
+        } else {
 
             args[i] = NULL;
 
