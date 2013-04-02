@@ -123,7 +123,8 @@ is a widely read Article Database. He also takes the time to set up the backgrou
 explaining what Lamport was dealing with as well as defines some possibly misunderstood
 terms before diving into his new element of the algroithm.
 
-A simple solution to Lamport's concurrent programming problem with linear wait
+
+Efficient semaphore management using read/modify/write memory cycles
 ==============================================================================
 ACM SIGOPS Operating Systems Review Homepage archive
 Volume 16 Issue 1, January 1982
