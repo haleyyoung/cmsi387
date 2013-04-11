@@ -7,15 +7,15 @@
 #include "bb-sync.h"
 
 /* The test harness defines the expected interfaces. */
-void *produce(int produceBound);
-void *consume(int consumeBound);
+void *pickUp(int thinkBound);
+void *putDown(int eatBound);
 
 /**
  * Thread runner for the producer.
  */
 void *philRunner(void *arg) {
     printf("Starting philosopher\n");
-    produce((int)arg);
+    pickUp((int)arg);
     printf("Ending philosopher\n");
     pthread_exit(NULL);
 }

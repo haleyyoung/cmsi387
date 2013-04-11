@@ -1,4 +1,4 @@
-bb: bb-harness.o bb-sync.o bb-cs.o consumer.o producer.o utility.o
+bb: bb-harness.o bb-sync.o bb-cs.o putDown.o pickUp.o utility.o
 	gcc -o bb *.o -lpthread
 
 bb-harness.o: bb-sync.h
