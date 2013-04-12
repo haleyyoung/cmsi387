@@ -1,5 +1,5 @@
 /**
- * A test harness for running solutions to the bounded buffer problem.
+ * A test harness for running solutions to the dining philosophers problem.
  */
 #include <pthread.h>
 #include <stdio.h>
@@ -11,7 +11,7 @@ void *pickUp(int thinkBound);
 void *putDown(int eatBound);
 
 /**
- * Thread runner for the producer.
+ * Thread runner for philosophers.
  */
 void *philRunner(void *arg) {
     printf("Starting philosopher\n");

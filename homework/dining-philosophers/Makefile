@@ -7,9 +7,9 @@ bb-cs.o: bb-cs.h buffer.h
 
 bb-sync.o: bb-sync.h buffer.h
 
-consumer.o: bb-cs.h bb-sync.h buffer.h utility.h
+putDown.o: bb-cs.h bb-sync.h buffer.h utility.h
 
-producer.o: bb-cs.h bb-sync.h buffer.h utility.h
+pickUp.o: bb-cs.h bb-sync.h buffer.h utility.h
 
 utility.o: utility.h
 

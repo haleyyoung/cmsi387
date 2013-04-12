@@ -12,15 +12,17 @@
 
 void initSync(void) {
     pthread_mutex_init(&mutex, NULL);
+    int i;
+    int chopsticksLength = sizeof(int)*5;
 #ifndef __APPLE_CC__
-    empty = &emptyHolder;
-    full = &fullHolder;
-    sem_init(empty, 0, BUFFER_SIZE - 1);
-    sem_init(full, 0, 0);
+    chopsticks = &statusOfChopsticks;
+    for(i = 0; i < chopsticksLength; i += sizeof(sem_t)){
+        sem_init(chopsticks[i], 0, 1);
+    }
 #else
-    sem_unlink("empty");
-    sem_unlink("full");
-    empty = sem_open("empty", O_CREAT, S_IRWXU, BUFFER_SIZE - 1);
-    full = sem_open("full", O_CREAT, S_IRWXU, 0);
+    sem_unlink("chopsticks");
+    for(i = 0; i < chopsticksLength; i += sizeof(sem_t)){
+        chopsticks[i] = sem_open("chopsticks[" + i + "]", O_CREAT, S_IRWXU, 1);
+    }
 #endif
 }
