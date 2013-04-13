@@ -1,7 +1,7 @@
 ASCII Art Explanation
 =====================
 
-| \*\-\_\-\* | \*\-\_\-\* \* | \-\_\- \* \* | 0o0 | \* \*\-\_\-\*
+| \*\-\_\-\* | \*\-\_\-\* \* | \-\_\- \* \* | 0_0 | \* \*\-\_\-\*
 
 In this case. The first philosopher is thinking and holding no chopsticks.
 (right and left are available)
