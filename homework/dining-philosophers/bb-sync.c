@@ -15,8 +15,8 @@ void initSync(void) {
     int i;
     int chopsticksLength = sizeof(int)*5;
 #ifndef __APPLE_CC__
-    chopsticks = &statusOfChopsticks;
     for(i = 0; i < chopsticksLength; i += sizeof(sem_t)){
+        chopsticks[i] = &statusOfChopsticks[i];
         sem_init(chopsticks[i], 0, 1);
     }
 #else

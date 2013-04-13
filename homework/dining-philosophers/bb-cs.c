@@ -33,7 +33,7 @@ void display_buffer(const char *preface, int in, int out) {
     printf("%s", display);
 }
 
-int insert_item(buffer_item item) {
+int _item(int philosopherNumber, int chopstickNumber) {
     // Critical section sanity check.
     if (((in + 1) % BUFFER_SIZE) == out) {
         printf("*** CRITICAL SECTION VIOLATION ***\n");
