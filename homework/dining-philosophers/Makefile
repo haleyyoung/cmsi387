@@ -1,17 +1,9 @@
-bb: bb-harness.o bb-sync.o bb-cs.o putDown.o pickUp.o utility.o
-	gcc -o bb *.o -lpthread
+CC = gcc
+FILES = diningPhilosophers.c utils.c
+LIBS = -lpthread
 
-bb-harness.o: bb-sync.h
-
-bb-cs.o: bb-cs.h buffer.h
-
-bb-sync.o: bb-sync.h buffer.h
-
-putDown.o: bb-cs.h bb-sync.h buffer.h utility.h
-
-pickUp.o: bb-cs.h bb-sync.h buffer.h utility.h
-
-utility.o: utility.h
+build: $(FILES)
+	$(CC) $(FILES) $(LIBS)
 
 clean:
-	rm bb *.o
+	rm a.out
