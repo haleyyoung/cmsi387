@@ -17,7 +17,7 @@ void putDownChopsticks(philosopher* phil) {
     randomwait(phil->name + 2);
 
     // Let go of right-hand chopstick
-    printf("Philosopher %d puts down right chopstick", phil->name);
+    printf("Philosopher %d puts down right chopstick\n", phil->name);
 
     pthread_mutex_unlock(&chopsticks[phil->name]);
     phil->rightHand = 0;
@@ -31,7 +31,7 @@ void putDownChopsticks(philosopher* phil) {
 
 
     // Let go of left-hand chopstick
-    printf("Philosopher %d puts down left chopstick", phil->name);
+    printf("Philosopher %d puts down left chopstick\n", phil->name);
 
     pthread_mutex_unlock(&chopsticks[(phil->name + 1) % 5]);
     phil->leftHand = 0;
@@ -42,6 +42,8 @@ void putDownChopsticks(philosopher* phil) {
         phil->leftHand = 1;
         return;
     }
+
+    printf("Philosopher %d thinking\n", phil->name);
 }
 
 void pickUpChopsticks(philosopher* phil) {
@@ -53,9 +55,13 @@ void pickUpChopsticks(philosopher* phil) {
     int lockingRight = pthread_mutex_trylock(&chopsticks[phil->name]);
     while (lockingRight) {
         lockingRight = pthread_mutex_trylock(&chopsticks[phil->name]);
-        phil->rightHand = 1;
+        (*phil).rightHand = 1;
     }
-    if (phil) {
+    printf("????????????? phil %d right hand %d\n", phil->name, phil->rightHand);
+    printf("\n\nphilosopher %d left hand %d philosopher %d right hand %d\n\n",
+        philosophers[(phil->name + 4) % 5].name, philosophers[(phil->name + 4) % 5].leftHand,
+        philosophers[phil->name].name, philosophers[phil->name].rightHand);
+    if (philosophers[(phil->name + 4) % 5].leftHand && philosophers[phil->name].rightHand) {
         fprintf(stderr, "***** Pick up right failed!\n");
         pthread_mutex_unlock(&chopsticks[phil->name]);
         phil->rightHand = 0;
@@ -70,12 +76,18 @@ void pickUpChopsticks(philosopher* phil) {
         lockingLeft = pthread_mutex_trylock(&chopsticks[(phil->name + 1) % 5]);
         phil->leftHand = 1;
     }
-    if (phil) {
+    printf("????????????? phil %d left hand %d\n", phil->name, phil->leftHand);
+    printf("\n\nphilosopher %d left hand %d philosopher %d right hand %d\n\n",
+        philosophers[phil->name].name, philosophers[phil->name].leftHand,
+        philosophers[(phil->name + 1) % 5].name, philosophers[(phil->name + 1) % 5].rightHand);
+    if (philosophers[phil->name].leftHand && philosophers[(phil->name + 1) % 5].rightHand) {
         fprintf(stderr, "***** Pick up left failed!\n");
         pthread_mutex_unlock(&chopsticks[(phil->name + 1) % 5]);
         phil->leftHand = 0;
         return;
     }
+
+    printf("Philosopher %d eating\n", phil->name);
 }
 
 

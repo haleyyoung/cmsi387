@@ -12,6 +12,7 @@ typedef struct{
 } philosopher;
 
 
+philosopher philosophers[5];
 pthread_mutex_t chopsticks[5];
 
 void *philRunner(void *arg);

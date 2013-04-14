@@ -27,7 +27,6 @@ int main(int argc, char** argv) {
     /* Create the philosopher objects. */
     // status = 0 is thinking, status = 1 is eating
     // rightHand = 0 is not holding a chopstick
-    philosopher philosophers[5];
 
     for (i = 0; i < 5; i++) {
         pthread_mutex_init(&chopsticks[i], NULL);
