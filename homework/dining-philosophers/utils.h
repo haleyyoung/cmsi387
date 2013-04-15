@@ -10,6 +10,6 @@ int randomwait(int bound);
 void pickUpChopsticks(philosopher* phil);
 void putDownChopsticks(philosopher* phil);
 
-void displayTable(philosopher* philosophers, pthread_mutex_t* chopsticks);
+void displayTable();
 
 #endif

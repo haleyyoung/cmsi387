@@ -24,13 +24,16 @@ void *philRunner(void *phil) {
 int main(int argc, char** argv) {
     int i;
 
+
+    // chopstickStatus[0] == 1 means chopstick 0 is available
+    for (i = 0; i < 5; i++) {
+        pthread_mutex_init(&chopsticks[i], NULL);
+        chopstickStatus[i] = 1;
+    }
+
     /* Create the philosopher objects. */
     // status = 0 is thinking, status = 1 is eating
     // rightHand = 0 is not holding a chopstick
-
-    for (i = 0; i < 5; i++) {
-        pthread_mutex_init(&chopsticks[i], NULL);
-    }
 
     for(i = 0; i < 5; i++) {
         philosophers[i].name = i;
