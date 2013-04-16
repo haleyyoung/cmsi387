@@ -3,8 +3,6 @@
 
 #include "diningPhilosophers.h"
 
-/* The test harness defines the expected interfaces. */
-
 int randomwait(int bound);
 
 void pickUpChopsticks(philosopher* phil);

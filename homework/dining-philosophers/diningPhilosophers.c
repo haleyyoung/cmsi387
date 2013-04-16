@@ -10,10 +10,12 @@
  */
 void *philRunner(void *phil) {
     printf("Starting philosopher\n");
+
     while(1){
         pickUpChopsticks((philosopher *) phil);
         putDownChopsticks((philosopher *) phil);
     }
+
     printf("Ending philosopher\n");
     pthread_exit(NULL);
 }
@@ -23,7 +25,6 @@ void *philRunner(void *phil) {
  */
 int main(int argc, char** argv) {
     int i;
-
 
     // chopstickStatus[0] == 1 means chopstick 0 is available
     for (i = 0; i < 5; i++) {
@@ -42,7 +43,6 @@ int main(int argc, char** argv) {
         philosophers[i].status = 0;
 
         /* Start the threads. */
-        //pthread_t philosophers[i].thread;
         pthread_create(&philosophers[i].thread, NULL, philRunner, (void *) &philosophers[i]);
     }
 

@@ -11,7 +11,6 @@ typedef struct{
     int status;
 } philosopher;
 
-
 philosopher philosophers[5];
 pthread_mutex_t chopsticks[5];
 int chopstickStatus[5];

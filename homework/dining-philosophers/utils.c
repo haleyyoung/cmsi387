@@ -23,8 +23,6 @@ void putDownChopsticks(philosopher* phil) {
     chopstickStatus[phil->name] = 1;
 
     printf("Philosopher %d puts down right chopstick\n", phil->name);
-    printf("chopsticks %d %d %d %d %d\n", chopstickStatus[0], chopstickStatus[1],
-        chopstickStatus[2], chopstickStatus[3], chopstickStatus[4]);
     displayTable();
 
     // Let go of left-hand chopstick
@@ -33,17 +31,13 @@ void putDownChopsticks(philosopher* phil) {
     chopstickStatus[(phil->name + 1) % 5] = 1;
 
     printf("Philosopher %d puts down left chopstick\n", phil->name);
-    printf("chopsticks %d %d %d %d %d\n", chopstickStatus[0], chopstickStatus[1],
-        chopstickStatus[2], chopstickStatus[3], chopstickStatus[4]);
     displayTable();
-    printf("Philosopher %d thinking\n", phil->name);
 }
 
 void pickUpChopsticks(philosopher* phil) {
     randomwait(phil->name + 2);
 
     // picking up right chopstick
-
     int lockingRight = pthread_mutex_trylock(&chopsticks[phil->name]);
     while (lockingRight) {
         lockingRight = pthread_mutex_trylock(&chopsticks[phil->name]);
@@ -52,8 +46,6 @@ void pickUpChopsticks(philosopher* phil) {
     chopstickStatus[phil->name] = 0;
 
     printf("Philosopher %d picks up right chopstick.\n", phil->name);
-    printf("chopsticks %d %d %d %d %d\n", chopstickStatus[0], chopstickStatus[1],
-        chopstickStatus[2], chopstickStatus[3], chopstickStatus[4]);
     displayTable();
 
     if (philosophers[(phil->name + 4) % 5].leftHand && philosophers[phil->name].rightHand) {
@@ -65,7 +57,6 @@ void pickUpChopsticks(philosopher* phil) {
     }
 
     // picking up left chopstick
-
     int lockingLeft = pthread_mutex_trylock(&chopsticks[(phil->name + 1) % 5]);
     while (lockingLeft) {
         lockingLeft = pthread_mutex_trylock(&chopsticks[(phil->name + 1) % 5]);
@@ -74,8 +65,6 @@ void pickUpChopsticks(philosopher* phil) {
     chopstickStatus[(phil->name + 1) % 5] = 0;
 
     printf("Philosopher %d picks up left chopstick.\n", phil->name);
-    printf("chopsticks %d %d %d %d %d\n", chopstickStatus[0], chopstickStatus[1],
-        chopstickStatus[2], chopstickStatus[3], chopstickStatus[4]);
     displayTable();
 
     if (philosophers[phil->name].leftHand && philosophers[(phil->name + 1) % 5].rightHand) {
@@ -85,16 +74,14 @@ void pickUpChopsticks(philosopher* phil) {
         chopstickStatus[(phil->name + 1) % 5] = 1;
         return;
     }
-
-    printf("Philosopher %d eating\n", phil->name);
 }
 
 
 
 
 void displayTable() {
-    // 5 philosophers made of 5 characters each + 5 chopsticks = 30
-    char display[sizeof(char)*50];
+    // 5 philosophers * 5 characters each + 5 chopsticks + 6 * 2 possible spaces = 42
+    char display[sizeof(char)*42];
     sprintf(display, "TABLE:");
     int i;
     for (i = 0; i < 5; i++) {
