@@ -13,5 +13,13 @@ void setPageTable(pagetable *pt) {
 }
 
 int getPhysical(int logical) {
-    // TODO
+    if (logical < 0 || logical > 255) {
+        return ERR_OUT_OF_RANGE;
+    }
+
+    int frame = logical >> 4;
+
+    if (ptr[frame].valid == 0) {
+        return ERR_INVALID;
+    }
 }
