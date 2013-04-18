@@ -27,8 +27,8 @@ int getPhysical(int logical) {
     frame = ptr[frame].frame << PAGEBITS;
 
     int intermediateAddress = logical >> PAGEBITS << PAGEBITS;
-    int address = logical - intermediateAddress;
-    int physicalAddress = frame + address;
+    int offset = logical - intermediateAddress;
+    int physicalAddress = frame + offset;
 
     return physicalAddress;
 }
