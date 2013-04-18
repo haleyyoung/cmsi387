@@ -22,4 +22,12 @@ int getPhysical(int logical) {
     if (ptr[frame].valid == 0) {
         return ERR_INVALID;
     }
+
+    frame = ptr[frame].frame << 4;
+
+    int intermediateAddress = logical >> 4 << 4;
+    int address = logical - intermediateAddress;
+    int physicalAddress = frame + address;
+
+    return physicalAddress;
 }
