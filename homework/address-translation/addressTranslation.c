@@ -13,19 +13,20 @@ void setPageTable(pagetable *pt) {
 }
 
 int getPhysical(int logical) {
-    if (logical < 0 || logical > 255) {
+    int addressUpperBound = PAGECOUNT*PAGECOUNT - 1;
+    if (logical < 0 || logical > addressUpperBound) {
         return ERR_OUT_OF_RANGE;
     }
 
-    int frame = logical >> 4;
+    int frame = logical >> PAGEBITS;
 
     if (ptr[frame].valid == 0) {
         return ERR_INVALID;
     }
 
-    frame = ptr[frame].frame << 4;
+    frame = ptr[frame].frame << PAGEBITS;
 
-    int intermediateAddress = logical >> 4 << 4;
+    int intermediateAddress = logical >> PAGEBITS << PAGEBITS;
     int address = logical - intermediateAddress;
     int physicalAddress = frame + address;
 
