@@ -22,7 +22,7 @@ for the latter case are the by now familiar P and V operations on semaphores
 introduced by E. W. Dijkstra 2" (Hansen, 1972, p. 102).
 
 "It can be done with the aid of a single binary semaphore, say 'free'. The value
-of 'free' euqls the number of processes allowed to enter their ciritcal setion
+of 'free' equals the number of processes allowed to enter their ciritcal setion
 now, or:
 
 'free = 1' means: none of the processes is engaged in its critical section
@@ -49,10 +49,10 @@ of other processes.
 *Quality*
 ***
 The quality of this work is good because the author is associated with Carnegie-Mellon,
-a prestigeous university in the computer science field. This article was also
+a prestigious university in the computer science field. This article was also
 found in the ACM which is a widely read Article Database. The thing I liked about
 this article was that the author not only used snippets of code to get their
-point accross, but they also drew diagrams of things that might be considered
+point across, but they also drew diagrams of things that might be considered
 confusing.
 
 A simple solution to Lamport's concurrent programming problem with linear wait
