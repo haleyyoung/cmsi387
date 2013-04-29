@@ -5,6 +5,8 @@
 
 int randomwait(int bound);
 
+// JD: The functions below strike me as belonging more in
+//     diningPhilosophers.h rather than utils.h.
 void pickUpChopsticks(philosopher* phil);
 void putDownChopsticks(philosopher* phil);
 

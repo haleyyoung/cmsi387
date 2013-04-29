@@ -38,10 +38,19 @@ void pickUpChopsticks(philosopher* phil) {
     randomwait(phil->name + 2);
 
     // picking up right chopstick
+    // JD: Nice that you found trylock---however, because this was not
+    //     addressed in class, you should include a little explanation
+    //     here stating what it does and why you chose to use this
+    //     instead of just plain "lock."
     int lockingRight = pthread_mutex_trylock(&chopsticks[phil->name]);
     while (lockingRight) {
         lockingRight = pthread_mutex_trylock(&chopsticks[phil->name]);
     }
+    // JD: ^^^Also, your code would be more readable (and better separated)
+    //     if you factor out "getRightChopstickIndex" (or any other name
+    //     that conveys the same meaning) as a function.  Ditto with the
+    //     code for the left chopstick (below), which actually does involve
+    //     more logic and thus really calls for a separate function.
     phil->rightHand = 1;
     chopstickStatus[phil->name] = 0;
 
@@ -57,6 +66,9 @@ void pickUpChopsticks(philosopher* phil) {
     }
 
     // picking up left chopstick
+    // JD: As mentioned above, the expression "(index + 1) % 5" is repeated
+    //     a good number of times here, and justifiably belongs in its own
+    //     function, say getLeftChopstickIndex.
     int lockingLeft = pthread_mutex_trylock(&chopsticks[(phil->name + 1) % 5]);
     while (lockingLeft) {
         lockingLeft = pthread_mutex_trylock(&chopsticks[(phil->name + 1) % 5]);
@@ -81,8 +93,20 @@ void pickUpChopsticks(philosopher* phil) {
 
 void displayTable() {
     // 5 philosophers * 5 characters each + 5 chopsticks + 6 * 2 possible spaces = 42
-    char display[sizeof(char)*42];
+    // JD: Above gets 25 + 5 + 12 = 42, indeed, but based on your strcats below
+    //     I get up to 4 per left chopstick + up to 5 per philosopher, or
+    //     (4 + 5) * 5 = 45.  That, and you begin the string with TABLE:
+    //     (+6) plus append a newline (+1) plus must also account for the
+    //     null terminator (+1)...and you get at least 45 + 6 + 2 = 53.
+//    char display[sizeof(char)*42];
+    char display[53];
+    // JD: ^^^Because the type of array is known (char), there is no need for
+    //     a sizeof(char) in the declaration.
+
     sprintf(display, "TABLE:");
+    // JD: ^^^sprintf has additional logic for formatting arguments etc.
+    //     Although what you have above does work, for what you are doing
+    //     you may as well use strcpy instead of sprintf.
     int i;
     for (i = 0; i < 5; i++) {
         //place left chopstick
