@@ -1,0 +1,101 @@
+haley@peterpan:~/Documents/gitRepos/cmsi387/homework$ mkdir csi-fs
+haley@peterpan:~/Documents/gitRepos/cmsi387/homework$ cd csi-fs/
+haley@peterpan:~/Documents/gitRepos/cmsi387/homework/csi-fs$ dd if=/dev/zero of=image count=1024
+1024+0 records in
+1024+0 records out
+524288 bytes (524 kB) copied, 0.00346942 s, 151 MB/s
+haley@peterpan:~/Documents/gitRepos/cmsi387/homework/csi-fs$ mke2fs image
+mke2fs 1.42.5 (29-Jul-2012)
+image is not a block special device.
+Proceed anyway? (y,n) y
+Discarding device blocks: done                            
+Filesystem label=
+OS type: Linux
+Block size=1024 (log=0)
+Fragment size=1024 (log=0)
+Stride=0 blocks, Stripe width=0 blocks
+64 inodes, 512 blocks
+25 blocks (4.88%) reserved for the super user
+First data block=1
+Maximum filesystem blocks=524288
+1 block group
+8192 blocks per group, 8192 fragments per group
+64 inodes per group
+
+Allocating group tables: done                            
+Writing inode tables: done                            
+Writing superblocks and filesystem accounting information: done
+
+haley@peterpan:~/Documents/gitRepos/cmsi387/homework/csi-fs$ sudo mount -o loop -o nosuid -o nodev image .
+haley@peterpan:~/Documents/gitRepos/cmsi387/homework/csi-fs$ df
+Filesystem     1K-blocks      Used Available Use% Mounted on
+/dev/sda3      715136536 159323644 519485980  24% /
+udev             2989472         4   2989468   1% /dev
+tmpfs            1199488       904   1198584   1% /run
+none                5120         0      5120   0% /run/lock
+none             2998720       452   2998268   1% /run/shm
+none              102400        40    102360   1% /run/user
+/dev/sda2          35268       122     35147   1% /boot/efi
+/dev/loop0           499        15       459   4% /home/haley/Documents/gitRepos/cmsi387/homework/csi-fs
+haley@peterpan:~/Documents/gitRepos/cmsi387/homework/csi-fs$ ls
+image
+haley@peterpan:~/Documents/gitRepos/cmsi387/homework/csi-fs$ cd ..
+haley@peterpan:~/Documents/gitRepos/cmsi387/homework$ ls
+address-translation  dining-philosophers  os-literature     ubuntu-kernel
+csi-fs               kernel               page-replacement
+csi-os               my-own-commands      shell-guide
+csi-process          myshell              shell-gymnastics
+haley@peterpan:~/Documents/gitRepos/cmsi387/homework$ cd csi-fs/
+haley@peterpan:~/Documents/gitRepos/cmsi387/homework/csi-fs$ ls
+lost+found
+haley@peterpan:~/Documents/gitRepos/cmsi387/homework/csi-fs$ vi myName.txt
+haley@peterpan:~/Documents/gitRepos/cmsi387/homework/csi-fs$ mkdir newFolder
+haley@peterpan:~/Documents/gitRepos/cmsi387/homework/csi-fs$ ls
+lost+found  myName.txt  newFolder
+haley@peterpan:~/Documents/gitRepos/cmsi387/homework/csi-fs$ cd newFolder/
+haley@peterpan:~/Documents/gitRepos/cmsi387/homework/csi-fs/newFolder$ ls
+haley@peterpan:~/Documents/gitRepos/cmsi387/homework/csi-fs/newFolder$ vi something.txt
+haley@peterpan:~/Documents/gitRepos/cmsi387/homework/csi-fs/newFolder$ ln -s ../myName.txt ./myName
+haley@peterpan:~/Documents/gitRepos/cmsi387/homework/csi-fs/newFolder$ ls
+myName  something.txt
+haley@peterpan:~/Documents/gitRepos/cmsi387/homework/csi-fs/newFolder$ cd ..
+haley@peterpan:~/Documents/gitRepos/cmsi387/homework/csi-fs$ ls
+lost+found  myName.txt  newFolder
+haley@peterpan:~/Documents/gitRepos/cmsi387/homework/csi-fs$ ln ./newFolder/something.txt ./something
+haley@peterpan:~/Documents/gitRepos/cmsi387/homework/csi-fs$ ls
+lost+found  myName.txt  newFolder  something
+haley@peterpan:~/Documents/gitRepos/cmsi387/homework/csi-fs$ ls -l
+total 15
+drwx------ 2 root  root  12288 Apr 29 19:18 lost+found
+-rw-rw-r-- 1 haley haley    21 Apr 30 17:20 myName.txt
+drwxrwxr-x 2 haley haley  1024 Apr 30 17:25 newFolder
+-rw-rw-r-- 2 haley haley    38 Apr 30 17:24 something
+haley@peterpan:~/Documents/gitRepos/cmsi387/homework/csi-fs$ ls -i
+11 lost+found  12 myName.txt  13 newFolder  15 something
+haley@peterpan:~/Documents/gitRepos/cmsi387/homework/csi-fs$ cd newFolder/
+haley@peterpan:~/Documents/gitRepos/cmsi387/homework/csi-fs/newFolder$ ls -i
+14 myName  15 something.txt
+haley@peterpan:~/Documents/gitRepos/cmsi387/homework/csi-fs/newFolder$ ls -F
+myName@  something.txt
+haley@peterpan:~/Documents/gitRepos/cmsi387/homework/csi-fs/newFolder$ cd ..
+haley@peterpan:~/Documents/gitRepos/cmsi387/homework/csi-fs$ ls -F
+lost+found/  myName.txt  newFolder/  something
+haley@peterpan:~/Documents/gitRepos/cmsi387/homework/csi-fs$ ls -a
+.  ..  lost+found  myName.txt  newFolder  something
+haley@peterpan:~/Documents/gitRepos/cmsi387/homework/csi-fs$ cd newFolder/
+haley@peterpan:~/Documents/gitRepos/cmsi387/homework/csi-fs/newFolder$ ls -a
+.  ..  myName  something.txt
+haley@peterpan:~/Documents/gitRepos/cmsi387/homework/csi-fs/newFolder$ cd ..
+haley@peterpan:~/Documents/gitRepos/cmsi387/homework/csi-fs$ cd ..
+haley@peterpan:~/Documents/gitRepos/cmsi387/homework$ sudo umount csi-fs/
+[sudo] password for haley: 
+haley@peterpan:~/Documents/gitRepos/cmsi387/homework$ df
+Filesystem     1K-blocks      Used Available Use% Mounted on
+/dev/sda3      715136536 159341892 519467732  24% /
+udev             2989472         4   2989468   1% /dev
+tmpfs            1199488       908   1198580   1% /run
+none                5120         0      5120   0% /run/lock
+none             2998720      3500   2995220   1% /run/shm
+none              102400        48    102352   1% /run/user
+/dev/sda2          35268       122     35147   1% /boot/efi
+haley@peterpan:~/Documents/gitRepos/cmsi387/homework$
