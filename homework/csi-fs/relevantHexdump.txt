@@ -22,7 +22,7 @@ Superblock
 End Superblock
 --------------
 *
-File Descriptor
+File Descriptor # JD: <--- *Group* descriptor, not file descriptor
 ---------------
 00000800  04 00 00 00 05 00 00 00  06 00 00 00 e1 01 31 00  |..............1.|
 00000810  03 00 04 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
@@ -36,6 +36,12 @@ First Inode
 00001820  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
 End First Inode
 ---------------
+# JD: Even though it was not explicitly asked for, it is somewhat
+#     surprising to not see the root directory inode here.  After
+#     all, that's how you got to the root directory entries, right?
+#     You show the (reserved) first inode and the (unrequested)
+#     lost+found inode, so the missing root directory inode just
+#     sticks out all the more.
 First unreserved inode - lost+found inode
 -----------------------------------------
 00001d00  c0 41 00 00 00 30 00 00  ae 2c 7f 51 f9 29 7f 51  |.A...0...,.Q.).Q|
